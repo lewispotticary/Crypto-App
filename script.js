@@ -1,6 +1,7 @@
 const search = document.getElementById('searchBar');
 const searchBtn = document.getElementById('searchBtn');
 const matchList = document.getElementById('matchList');
+const portfolio = document.getElementById('portfolio');
 
 const searchCoins = async searchText =>{
     const res = await fetch('https://api.coingecko.com/api/v3/coins/list');
@@ -25,8 +26,13 @@ const outputHtml = matches => {
     if(matches.length > 0){
         const html = matches
             .map(
-                match => `<h4>${match.name}<h4>`
-            )
+                match => `
+                <div class="card"
+                    <h4>${match.name}</h4>
+                    <h4 id="symbol">(${match.symbol})</h4>
+                    <button class="addBtn" id="${match.id}" onclick="addCrypto(this.id)">Add</button>
+                </div>
+                `)
             .join('');
             
             console.log(html);
@@ -34,7 +40,14 @@ const outputHtml = matches => {
     }
 };
 
+function addCrypto (clicked_id){
+    !async function(){
+        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${clicked_id}`);
+        const coin = await res.json();
+        console.log(coin);
+    }();
 
+}
 
 searchBtn.addEventListener('click', () => searchCoins(search.value));
 
