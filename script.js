@@ -28,9 +28,11 @@ const outputHtml = matches => {
             .map(
                 match => `
                 <div class="card"
-                    <h4>${match.name}</h4>
-                    <h4 id="symbol">(${match.symbol})</h4>
-                    <button class="addBtn" id="${match.id}" onclick="addCrypto(this.id)">Add</button>
+                    <h2>${match.name}</h2>
+                    <h2 id="symbol">(${match.symbol})</h2>
+                    <div id="${match.id}" onclick="addCrypto(this.id)">
+                        <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    </div>
                 </div>
                 `)
             .join('');
@@ -57,6 +59,7 @@ function addCrypto (clicked_id){
         var coinPrice = coin.market_data.current_price.gbp;
         var coinChange24h = coin.market_data.price_change_percentage_24h;
         coinChange24h = Math.round(coinChange24h * 10) / 10
+        var changeDirection = String(coinChange24h).charAt(0);
 
         var portfolioContainer = document.createElement('div');
         portfolioContainer.setAttribute('id','portfolioContainer');
@@ -87,6 +90,14 @@ function addCrypto (clicked_id){
         coinPriceText.innerText = '£'+ coinPrice;
         var coinChangeText = document.createElement('span');
         coinChangeText.innerText = coinChange24h + '%';
+        if(changeDirection == '-'){
+            coinChangeText.style.color = "red";
+        }
+        else{
+            coinChangeText.style.color = "green";
+        }
+
+
         portfolioRow3.appendChild(coinPriceText);
         portfolioRow3.appendChild(coinChangeText);
 
